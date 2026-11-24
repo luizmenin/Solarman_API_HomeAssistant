@@ -1,12 +1,12 @@
 {
   "domain": "solarman_openapi",
   "name": "SOLARMAN OpenAPI",
-  "codeowners": [],
+  "codeowners": ["@luizmenin"],
   "config_flow": true,
-  "documentation": "https://github.com/SEU_USUARIO/ha-solarman-openapi",
+  "documentation": "https://github.com/luizmenin/Solarman_API_HomeAssistant",
   "integration_type": "device",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/SEU_USUARIO/ha-solarman-openapi/issues",
+  "issue_tracker": "https://github.com/luizmenin/Solarman_API_HomeAssistant/issues",
   "requirements": [],
   "version": "0.1.0"
 }
