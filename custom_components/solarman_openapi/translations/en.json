@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "SOLARMAN OpenAPI",
-        "description": "The APP ID and APP Secret are not generated in the app: request them from SOLARMAN support (https://helpcenter.solarmanpv.com), asking for OpenAPI access for your account. Also enter your account e-mail and password and the logger SN. If automatic inverter discovery does not work, enter the inverter SNs manually (comma separated).",
+        "description": "The APP ID and APP Secret are not generated in the app: request them from SOLARMAN support ({help_url}), asking for OpenAPI access for your account. Also enter your account e-mail and password and the logger SN. If automatic inverter discovery does not work, enter the inverter SNs manually (comma separated).",
         "data": {
           "region": "Server",
           "app_id": "APP ID",

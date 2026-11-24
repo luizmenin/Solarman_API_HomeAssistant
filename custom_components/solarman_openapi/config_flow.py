@@ -46,6 +46,8 @@ from .helpers import parse_sns
 
 _LOGGER = logging.getLogger(__name__)
 
+HELP_URL = "https://helpcenter.solarmanpv.com"
+
 
 def _select_schema_field(sns: list[str]) -> SelectSelector:
     return SelectSelector(
@@ -138,7 +140,12 @@ class SolarmanConfigFlow(ConfigFlow, domain=DOMAIN):
                 vol.Optional(CONF_ORG_ID): vol.Coerce(int),
             }
         )
-        return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
+        return self.async_show_form(
+            step_id="user",
+            data_schema=schema,
+            errors=errors,
+            description_placeholders={"help_url": HELP_URL},
+        )
 
     async def async_step_select(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Choose which inverters of the logger to import."""

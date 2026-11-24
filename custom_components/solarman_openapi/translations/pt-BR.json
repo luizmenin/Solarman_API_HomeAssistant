@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "SOLARMAN OpenAPI",
-        "description": "O APP ID e o APP Secret não são gerados no aplicativo: solicite-os ao suporte da SOLARMAN (https://helpcenter.solarmanpv.com), pedindo o acesso à OpenAPI para a sua conta. Informe também e-mail e senha da conta e o SN do logger. Se a busca automática de inversores não funcionar, informe os SNs dos inversores manualmente (separados por vírgula).",
+        "description": "O APP ID e o APP Secret não são gerados no aplicativo: solicite-os ao suporte da SOLARMAN ({help_url}), pedindo o acesso à OpenAPI para a sua conta. Informe também e-mail e senha da conta e o SN do logger. Se a busca automática de inversores não funcionar, informe os SNs dos inversores manualmente (separados por vírgula).",
         "data": {
           "region": "Servidor",
           "app_id": "APP ID",
