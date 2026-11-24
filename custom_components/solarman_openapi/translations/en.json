@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "SOLARMAN OpenAPI",
-        "description": "Enter your developer and SOLARMAN account credentials plus the logger SN. If automatic inverter discovery does not work, enter the inverter SNs manually (comma separated).",
+        "description": "The APP ID and APP Secret are not generated in the app: request them from SOLARMAN support (https://helpcenter.solarmanpv.com), asking for OpenAPI access for your account. Also enter your account e-mail and password and the logger SN. If automatic inverter discovery does not work, enter the inverter SNs manually (comma separated).",
         "data": {
           "region": "Server",
           "app_id": "APP ID",
@@ -13,6 +13,12 @@
           "logger_sn": "Logger SN",
           "inverter_sns": "Inverter SNs (optional)",
           "org_id": "Org ID (optional)"
+        },
+        "data_description": {
+          "app_id": "Provided by SOLARMAN support.",
+          "app_secret": "Provided by SOLARMAN support. Keep it private.",
+          "logger_sn": "Serial number of the data logger that groups the inverters.",
+          "inverter_sns": "Only needed if automatic discovery does not find the inverters."
         }
       },
       "select": {
@@ -62,5 +68,12 @@
       }
     },
     "error": { "none_selected": "Select at least one inverter" }
+  },
+  "entity": {
+    "sensor": {
+      "participation_power": { "name": "Power with share" },
+      "participation_daily_energy": { "name": "Daily energy with share" },
+      "participation_total_energy": { "name": "Total energy with share" }
+    }
   }
 }

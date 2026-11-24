@@ -93,7 +93,7 @@ class SolarmanSensor(CoordinatorEntity[SolarmanCoordinator], SensorEntity):
         self._attr_name = item.get("name") or key
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, sn)},
-            name=f"SOLARMAN inversor {sn}",
+            name=f"SOLARMAN inverter {sn}",
             manufacturer="SOLARMAN",
             serial_number=sn,
             via_device=(DOMAIN, f"logger_{coordinator.logger_sn}"),
@@ -126,21 +126,19 @@ class SolarmanSensor(CoordinatorEntity[SolarmanCoordinator], SensorEntity):
         return value
 
 
+# Names live in strings.json / translations under entity.sensor.participation_<kind>.
 _PARTICIPATION = {
     KIND_POWER: (
-        "Potência com participação",
         UnitOfPower.WATT,
         SensorDeviceClass.POWER,
         SensorStateClass.MEASUREMENT,
     ),
     KIND_DAILY: (
-        "Energia do dia com participação",
         UnitOfEnergy.KILO_WATT_HOUR,
         SensorDeviceClass.ENERGY,
         SensorStateClass.TOTAL_INCREASING,
     ),
     KIND_TOTAL: (
-        "Energia total com participação",
         UnitOfEnergy.KILO_WATT_HOUR,
         SensorDeviceClass.ENERGY,
         SensorStateClass.TOTAL_INCREASING,
@@ -156,8 +154,8 @@ class SolarmanParticipationSensor(CoordinatorEntity[SolarmanCoordinator], Sensor
     def __init__(self, coordinator: SolarmanCoordinator, kind: str) -> None:
         super().__init__(coordinator)
         self._kind = kind
-        name, unit, device_class, state_class = _PARTICIPATION[kind]
-        self._attr_name = name
+        unit, device_class, state_class = _PARTICIPATION[kind]
+        self._attr_translation_key = f"participation_{kind}"
         self._attr_unique_id = f"{coordinator.logger_sn}_participation_{kind}"
         self._attr_native_unit_of_measurement = unit
         self._attr_device_class = device_class
