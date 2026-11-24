@@ -3,16 +3,26 @@
     "step": {
       "user": {
         "title": "SOLARMAN OpenAPI",
-        "description": "Enter your developer credentials (APP ID / APP Secret) and your SOLARMAN account details.",
+        "description": "Enter your developer and SOLARMAN account credentials plus the logger SN. If automatic inverter discovery does not work, enter the inverter SNs manually (comma separated).",
         "data": {
           "region": "Server",
           "app_id": "APP ID",
           "app_secret": "APP Secret",
           "email": "Account e-mail",
           "password": "Account password",
-          "device_sn": "Inverter serial number (SN)",
+          "logger_sn": "Logger SN",
+          "inverter_sns": "Inverter SNs (optional)",
           "org_id": "Org ID (optional)"
         }
+      },
+      "select": {
+        "title": "Logger inverters",
+        "description": "Select which inverters to import.",
+        "data": { "selected_inverters": "Inverters" }
+      },
+      "shares": {
+        "title": "Generation share",
+        "description": "Enter the percentage of each inverter's generation that is yours. The \"with share\" sensors sum value × percentage over the inverters."
       },
       "reauth_confirm": {
         "title": "Re-authenticate",
@@ -22,15 +32,35 @@
     "error": {
       "invalid_auth": "Invalid credentials",
       "cannot_connect": "Failed to connect to the API",
-      "no_data": "The API returned no data for this SN",
+      "no_inverters": "No inverters found. Enter the SNs manually.",
+      "none_selected": "Select at least one inverter",
+      "no_data": "The API returned no data for one of the inverters (check the SN)",
       "unknown": "Unexpected error"
     },
     "abort": {
-      "already_configured": "This device is already configured",
+      "already_configured": "This logger is already configured",
       "reauth_successful": "Re-authentication successful"
     }
   },
   "options": {
-    "step": { "init": { "data": { "scan_interval": "Update interval (minutes)" } } }
+    "step": {
+      "init": {
+        "title": "Options",
+        "description": "The optional data keys choose which data point feeds the \"with share\" sensors; empty means auto-detect.",
+        "data": {
+          "scan_interval": "Update interval (minutes)",
+          "selected_inverters": "Imported inverters",
+          "inverter_sns": "Add inverter SNs (optional)",
+          "power_key": "Power key (W)",
+          "daily_energy_key": "Daily energy key (kWh)",
+          "total_energy_key": "Total energy key (kWh)"
+        }
+      },
+      "shares": {
+        "title": "Generation share",
+        "description": "Percentage of each inverter's generation that is yours."
+      }
+    },
+    "error": { "none_selected": "Select at least one inverter" }
   }
 }

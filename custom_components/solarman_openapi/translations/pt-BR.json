@@ -3,41 +3,64 @@
     "step": {
       "user": {
         "title": "SOLARMAN OpenAPI",
-        "description": "Informe as credenciais de desenvolvedor (APP ID / APP Secret) e os dados da sua conta SOLARMAN.",
+        "description": "Informe as credenciais de desenvolvedor e da conta SOLARMAN, e o SN do logger. Se a busca automática de inversores não funcionar, informe os SNs dos inversores manualmente (separados por vírgula).",
         "data": {
           "region": "Servidor",
           "app_id": "APP ID",
           "app_secret": "APP Secret",
           "email": "E-mail da conta",
           "password": "Senha da conta",
-          "device_sn": "Número de série (SN) do inversor",
+          "logger_sn": "SN do logger",
+          "inverter_sns": "SNs dos inversores (opcional)",
           "org_id": "Org ID (opcional)"
         }
       },
+      "select": {
+        "title": "Inversores do logger",
+        "description": "Selecione quais inversores importar.",
+        "data": { "selected_inverters": "Inversores" }
+      },
+      "shares": {
+        "title": "Participação na geração",
+        "description": "Informe o percentual da geração de cada inversor que pertence a você. Os sensores \"com participação\" somam valor × percentual de cada inversor."
+      },
       "reauth_confirm": {
         "title": "Reautenticar",
-        "data": {
-          "app_secret": "APP Secret",
-          "password": "Senha da conta"
-        }
+        "data": { "app_secret": "APP Secret", "password": "Senha da conta" }
       }
     },
     "error": {
       "invalid_auth": "Credenciais inválidas",
       "cannot_connect": "Falha ao conectar à API",
-      "no_data": "A API não retornou dados para este SN",
+      "no_inverters": "Nenhum inversor encontrado. Informe os SNs manualmente.",
+      "none_selected": "Selecione ao menos um inversor",
+      "no_data": "A API não retornou dados para um dos inversores (verifique o SN)",
       "unknown": "Erro inesperado"
     },
     "abort": {
-      "already_configured": "Este dispositivo já está configurado",
+      "already_configured": "Este logger já está configurado",
       "reauth_successful": "Reautenticado com sucesso"
     }
   },
   "options": {
     "step": {
       "init": {
-        "data": { "scan_interval": "Intervalo de atualização (minutos)" }
+        "title": "Opções",
+        "description": "As chaves de dados (opcionais) definem qual ponto de dado alimenta os sensores \"com participação\"; em branco usa a detecção automática.",
+        "data": {
+          "scan_interval": "Intervalo de atualização (minutos)",
+          "selected_inverters": "Inversores importados",
+          "inverter_sns": "Adicionar SNs de inversores (opcional)",
+          "power_key": "Chave da potência (W)",
+          "daily_energy_key": "Chave da energia do dia (kWh)",
+          "total_energy_key": "Chave da energia total (kWh)"
+        }
+      },
+      "shares": {
+        "title": "Participação na geração",
+        "description": "Percentual da geração de cada inversor que pertence a você."
       }
-    }
+    },
+    "error": { "none_selected": "Selecione ao menos um inversor" }
   }
 }

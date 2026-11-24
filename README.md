@@ -1,21 +1,44 @@
 # SOLARMAN OpenAPI para Home Assistant
 
-Integração personalizada (HACS) que lê os dados em tempo real de um inversor via
-[SOLARMAN OpenAPI](https://globalapi.solarmanpv.com). Cada ponto de dado retornado
-por `POST /device/v1.0/currentData` vira um sensor (potência, energia, tensão, corrente etc.).
+Integração personalizada (HACS) que lê dados em tempo real de inversores via
+[SOLARMAN OpenAPI](https://globalapi.solarmanpv.com). A configuração é feita por **logger**,
+que pode ter vários inversores.
 
 ## Requisitos
-- Credenciais de desenvolvedor SOLARMAN: **APP ID** e **APP Secret** (solicite à SOLARMAN).
+- Credenciais de desenvolvedor SOLARMAN: **APP ID** e **APP Secret**.
 - E-mail e senha da conta SOLARMAN.
-- Número de série (SN) do inversor.
+- SN do logger (e, se a descoberta automática não funcionar, os SNs dos inversores).
 
 ## Instalação via HACS
-1. HACS → ⋮ → *Repositórios personalizados* → adicione a URL deste repositório, categoria **Integration**.
+1. HACS → ⋮ → *Repositórios personalizados* → URL deste repositório, categoria **Integration**.
 2. Instale **SOLARMAN OpenAPI** e reinicie o Home Assistant.
 3. *Configurações → Dispositivos e serviços → Adicionar integração → SOLARMAN OpenAPI*.
 
+## Vários inversores e participação (%)
+1. Informe o SN do logger. A integração tenta listar os inversores; se não conseguir, preencha *SNs dos inversores*.
+2. Selecione quais inversores importar.
+3. Informe a **participação (%)** de cada um na geração.
+
+Cada inversor vira um dispositivo com todos os seus sensores (valores **brutos**). O logger vira um
+dispositivo com três sensores já ponderados, somando `valor × % / 100` de cada inversor:
+
+| Sensor | Uso |
+|---|---|
+| Potência com participação (W) | potência instantânea |
+| Energia do dia com participação (kWh) | produção diária |
+| Energia total com participação (kWh) | **use este no painel de Energia** |
+
+Tudo pode ser alterado depois em *Configurar* (inversores, percentuais, intervalo).
+
+### Chaves de dados
+O ponto de dado usado nos sensores ponderados varia conforme o modelo. Há uma detecção automática
+(`APo_t1`, `Etdy_ge1`, `Et_ge0`, …). Se algum ficar *indisponível*, veja a chave nos sensores brutos
+do inversor (o `unique_id` termina com a chave) e informe-a em *Configurar*.
+
 ## Observações
-- A senha é convertida em SHA-256 e **somente o hash** é armazenado; a senha em texto puro nunca é salva.
-- Intervalo de atualização padrão: 5 min (ajustável em *Configurar*).
-- Servidor `global` = `globalapi.solarmanpv.com` (Data Center internacional); `china` = `api.solarmanpv.com`.
-- Em `tools/` há um testador em PowerShell para validar suas credenciais fora do HA.
+- Os sensores ponderados ficam indisponíveis se **qualquer** inversor selecionado falhar na atualização, para não gerar quedas falsas no contador de energia.
+- Alterar a participação (%) muda o valor acumulado; o painel de Energia pode interpretar como reinício do medidor. Prefira definir o percentual uma vez.
+- A senha é convertida em SHA-256 e **somente o hash** é armazenado.
+- Intervalo padrão: 5 min. Servidor `global` = `globalapi.solarmanpv.com`; `china` = `api.solarmanpv.com`.
+- A descoberta automática usa `/station/v1.0/list` e `/station/v1.0/device`, não confirmados na documentação pública; se falhar, use os SNs manuais.
+- Em `tools/` há um testador em PowerShell para validar as credenciais fora do HA.

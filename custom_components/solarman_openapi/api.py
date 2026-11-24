@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import logging
 import time
@@ -50,6 +51,7 @@ class SolarmanClient:
         self._org_id = org_id
         self._token: str | None = None
         self._token_expires = 0.0
+        self._lock = asyncio.Lock()
 
     async def _post(
         self,
@@ -97,10 +99,51 @@ class SolarmanClient:
         self._token_expires = time.monotonic() + int(data.get("expires_in", 3600))
 
     async def _ensure_token(self) -> str:
-        if not self._token or time.monotonic() > self._token_expires - _TOKEN_MARGIN:
-            await self.async_authenticate()
-        assert self._token
-        return self._token
+        async with self._lock:
+            if not self._token or time.monotonic() > self._token_expires - _TOKEN_MARGIN:
+                await self.async_authenticate()
+            assert self._token
+            return self._token
+
+    async def async_discover_inverters(self, logger_sn: str) -> list[str]:
+        """Best-effort: list inverter SNs of the account, filtered by logger.
+
+        Uses /station/v1.0/list and /station/v1.0/device. The response shape is
+        not covered by the public docs we could verify, so any failure simply
+        returns an empty list and the user types the inverter SNs manually.
+        """
+        found: dict[str, bool] = {}  # sn -> matches the logger
+        any_collector_field = False
+        try:
+            token = await self._ensure_token()
+            stations = await self._post(
+                "/station/v1.0/list", {"language": "en"}, {"page": 1, "size": 50}, token
+            )
+            for station in stations.get("stationList") or []:
+                devices = await self._post(
+                    "/station/v1.0/device",
+                    {"language": "en"},
+                    {"stationId": station.get("id"), "page": 1, "size": 100},
+                    token,
+                )
+                items = devices.get("deviceListItems") or devices.get("deviceList") or []
+                for item in items:
+                    if str(item.get("deviceType", "")).upper() != "INVERTER":
+                        continue
+                    sn = item.get("deviceSn")
+                    if not sn:
+                        continue
+                    collector = item.get("collectorSn")
+                    any_collector_field |= collector is not None
+                    found[sn] = collector is None or str(collector) == logger_sn
+        except SolarmanError as err:
+            _LOGGER.debug("Inverter discovery failed: %s", err)
+            return []
+        if any_collector_field:
+            matched = [sn for sn, ok in found.items() if ok]
+            if matched:
+                return matched
+        return list(found)
 
     async def _current_data(self, device_sn: str, key: str) -> dict[str, Any]:
         return await self._post(
