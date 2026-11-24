@@ -1,0 +1,27 @@
+﻿SOLARMAN API TESTER - WINDOWS
+
+COMO EXECUTAR
+1. Extraia a pasta SolarMan_Tester em qualquer local do Windows.
+   O servidor globalapi.solarmanpv.com e o APP ID fornecido pela SolarMan já estão selecionados/preenchidos.
+2. Dê dois cliques em Iniciar_SolarMan_Tester.bat.
+3. Na aba 1. Autenticação, selecione o servidor e informe APP ID, APP Secret e os dados da conta.
+4. Escolha o método de login (e-mail, celular ou usuário). Para celular, informe o código do país (Brasil = 55).
+5. Informe Org ID somente se sua conta/API exigir.
+6. Clique em Obter Token.
+7. Na aba 2. Dados em tempo real, informe o serial number do inversor e clique em Consultar geração em tempo real.
+
+REQUISITOS
+- Windows 10/11 com Windows PowerShell 5.1 e .NET Framework disponíveis (componentes nativos do Windows).
+- Acesso à internet HTTPS.
+- Credenciais de desenvolvedor SolarMan: APP ID e APP SECRET.
+- API habilitada para a conta.
+
+OBSERVAÇÕES
+- A senha da conta é convertida para SHA-256 (hexadecimal minúsculo) antes de ser enviada.
+- O APP Secret e a senha não são gravados em arquivo. O token permanece somente na memória enquanto o programa estiver aberto.
+- O servidor padrão é globalapi.solarmanpv.com, conforme confirmação da SolarMan para sua conta (International Data Centre).
+- A consulta usa POST /device/v1.0/currentData. Como a documentação específica do endpoint mostra deviceSn, mas o FAQ da SolarMan alerta sobre a grafia deviceSN em alguns parâmetros, o programa tenta deviceSN primeiro e, se receber 2101006 (invalid param), repete automaticamente com deviceSn. Consulte o log para identificar qual formato foi aceito.
+- Este utilitário é para teste manual; não persiste credenciais ou resultados.
+
+IMPORTANTE SOBRE SEGURANÇA
+O APP SECRET é uma credencial privada. Não o compartilhe nem o inclua em arquivos distribuídos. Como ele foi enviado em uma conversa, recomendamos solicitar à SolarMan a rotação/regeneração do segredo e utilizar o novo valor no campo APP Secret.

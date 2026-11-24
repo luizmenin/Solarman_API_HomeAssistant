@@ -1,0 +1,6 @@
+# NUNCA versionar credenciais
+- Util.txt
+*.secret
+.env
+__pycache__/
+*.pyc

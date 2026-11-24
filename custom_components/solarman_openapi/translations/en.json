@@ -1,0 +1,36 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "SOLARMAN OpenAPI",
+        "description": "Enter your developer credentials (APP ID / APP Secret) and your SOLARMAN account details.",
+        "data": {
+          "region": "Server",
+          "app_id": "APP ID",
+          "app_secret": "APP Secret",
+          "email": "Account e-mail",
+          "password": "Account password",
+          "device_sn": "Inverter serial number (SN)",
+          "org_id": "Org ID (optional)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate",
+        "data": { "app_secret": "APP Secret", "password": "Account password" }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid credentials",
+      "cannot_connect": "Failed to connect to the API",
+      "no_data": "The API returned no data for this SN",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This device is already configured",
+      "reauth_successful": "Re-authentication successful"
+    }
+  },
+  "options": {
+    "step": { "init": { "data": { "scan_interval": "Update interval (minutes)" } } }
+  }
+}

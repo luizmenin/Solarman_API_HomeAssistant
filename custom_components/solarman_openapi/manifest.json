@@ -1,0 +1,12 @@
+{
+  "domain": "solarman_openapi",
+  "name": "SOLARMAN OpenAPI",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://github.com/SEU_USUARIO/ha-solarman-openapi",
+  "integration_type": "device",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/SEU_USUARIO/ha-solarman-openapi/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}
